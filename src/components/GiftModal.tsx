@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import QRCode from 'qrcode'
 import { PIX } from '../config'
-import { formatBRL, type Gift } from '../data/gifts'
+import { formatPrice, type Gift } from '../data/gifts'
 import { buildPixPayload, maxMessageLength } from '../lib/pix'
+import { useCopy } from '../lib/useCopy'
 
 const MESSAGE_MAX = maxMessageLength(PIX.key)
 
@@ -13,15 +14,18 @@ interface Props {
 
 export default function GiftModal({ gift, onClose }: Props) {
   const [donor, setDonor] = useState('')
+  const freeValue = !gift.price
+  const label = freeValue ? 'Presente para os noivos' : gift.name
   // Limita o nome para que "<nome> - <presente>" caiba inteiro na descrição do PIX
-  const donorMax = MESSAGE_MAX - gift.name.length - 3
-  const message = donor.trim() ? `${donor.trim()} - ${gift.name}` : `Presente: ${gift.name}`
+  const donorMax = MESSAGE_MAX - label.length - 3
+  const fallback = freeValue ? label : `Presente: ${gift.name}`
+  const message = donor.trim() ? `${donor.trim()} - ${label}` : fallback
   const payload = useMemo(
     () => buildPixPayload({ ...PIX, amount: gift.price, message }),
     [gift.price, message],
   )
   const [qr, setQr] = useState('')
-  const [copied, setCopied] = useState<'code' | 'key' | null>(null)
+  const { copied, copy } = useCopy<'code' | 'key'>()
 
   useEffect(() => {
     QRCode.toDataURL(payload, { width: 280, margin: 1, color: { dark: '#2f3a2c', light: '#ffffff' } })
@@ -39,16 +43,6 @@ export default function GiftModal({ gift, onClose }: Props) {
     }
   }, [onClose])
 
-  const copy = async (text: string, what: 'code' | 'key') => {
-    try {
-      await navigator.clipboard.writeText(text)
-      setCopied(what)
-      setTimeout(() => setCopied(null), 2000)
-    } catch {
-      window.prompt('Copie o texto abaixo:', text)
-    }
-  }
-
   return (
     <div className="modal" role="dialog" aria-modal="true" aria-labelledby="gift-title" onClick={onClose}>
       <div className="modal__box" onClick={(e) => e.stopPropagation()}>
@@ -57,7 +51,7 @@ export default function GiftModal({ gift, onClose }: Props) {
         <div className="modal__head">
           <span className="modal__icon" aria-hidden>{gift.icon}</span>
           <h3 id="gift-title" className="modal__title">{gift.name}</h3>
-          <p className="modal__price">{formatBRL(gift.price)}</p>
+          <p className="modal__price">{formatPrice(gift)}</p>
         </div>
 
         <div className="modal__pay">
@@ -94,26 +88,28 @@ export default function GiftModal({ gift, onClose }: Props) {
             {copied === 'code' ? 'Código copiado! ✓' : 'Copiar código PIX'}
           </button>
           <p className="modal__hint modal__hint--small">
-            Cole o código na opção “PIX copia e cola” do app do seu banco.
+            Cole o código na opção “PIX copia e cola” do app do seu banco
+            {freeValue ? ' e digite o valor que quiser.' : '.'}
           </p>
         </div>
 
         <div className="modal__key">
           <div>
-            <span>Chave PIX (e-mail)</span>
-            <strong>{PIX.key}</strong>
+            <span>Chave PIX ({PIX.keyType}) · {PIX.receiver}</span>
+            <strong>{PIX.keyLabel}</strong>
           </div>
-          <button className="btn btn--outline btn--small" onClick={() => copy(PIX.key, 'key')}>
+          <button className="btn btn--outline btn--small" onClick={() => copy(PIX.keyCopy, 'key')}>
             {copied === 'key' ? 'Copiada! ✓' : 'Copiar chave'}
           </button>
         </div>
 
         <div className="modal__scan">
           <div className="modal__qr">
-            {qr ? <img src={qr} alt={`QR code PIX de ${formatBRL(gift.price)}`} /> : <span>Gerando QR code…</span>}
+            {qr ? <img src={qr} alt={freeValue ? 'QR code PIX com valor livre' : `QR code PIX de ${formatPrice(gift)}`} /> : <span>Gerando QR code…</span>}
           </div>
           <p className="modal__hint modal__hint--small">
-            Escaneie com o app do seu banco. O valor já vem preenchido.
+            Escaneie com o app do seu banco.{' '}
+            {freeValue ? 'Depois, digite o valor que quiser.' : 'O valor já vem preenchido.'}
           </p>
         </div>
 

@@ -377,7 +377,7 @@ a {
   width: 100%;
   aspect-ratio: 4 / 5;
   object-fit: cover;
-  object-position: 55% 20%;
+  object-position: 50% 80%;
   border-radius: 220px 220px var(--radius) var(--radius);
   box-shadow: var(--shadow);
 }
@@ -1004,5 +1004,259 @@ a {
   /* O botão já explica o que fazer; economiza espaço no celular */
   .modal__pay .modal__hint--small {
     display: none;
+  }
+}
+
+/* ---------- Galeria ---------- */
+.gallery {
+  text-align: center;
+}
+.gallery__track {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+.gallery__item {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--paper-2);
+  box-shadow: var(--shadow);
+  cursor: zoom-in;
+}
+.gallery__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+.gallery__item:hover img,
+.gallery__item:focus-visible img {
+  transform: scale(1.05);
+}
+.gallery__item:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+.gallery__dots {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .gallery__track {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Celular: carrossel deslizável, mostrando um pedaço da próxima foto */
+@media (max-width: 600px) {
+  .gallery__track {
+    display: flex;
+    gap: 0.75rem;
+    margin: 0 -1.25rem;
+    padding: 0.5rem 1.25rem 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 1.25rem;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .gallery__track::-webkit-scrollbar {
+    display: none;
+  }
+  .gallery__item {
+    flex: 0 0 80%;
+    scroll-snap-align: start;
+  }
+  .gallery__dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+  }
+  .gallery__dots button {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--line);
+    transition: background 0.2s, transform 0.2s;
+  }
+  .gallery__dots button.is-active {
+    background: var(--sage);
+    transform: scale(1.25);
+  }
+}
+
+/* Lightbox (foto em tela cheia) */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 3.5rem 4.5rem;
+  background: rgba(20, 24, 19, 0.94);
+  animation: fade 0.2s ease;
+  touch-action: pan-y;
+}
+.lightbox__img {
+  max-width: 100%;
+  max-height: calc(100svh - 7rem);
+  border-radius: 10px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: fade 0.25s ease;
+}
+.lightbox__close,
+.lightbox__nav {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--white);
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.lightbox__close:hover,
+.lightbox__nav:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+.lightbox__close {
+  top: 0.75rem;
+  right: 0.75rem;
+}
+.lightbox__nav {
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2.4rem;
+  padding-bottom: 4px;
+}
+.lightbox__nav--prev {
+  left: 0.75rem;
+}
+.lightbox__nav--next {
+  right: 0.75rem;
+}
+.lightbox__count {
+  position: absolute;
+  bottom: 1rem;
+  left: 0;
+  right: 0;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+}
+
+@media (max-width: 600px) {
+  .lightbox {
+    padding: 3.5rem 0.75rem 3rem;
+  }
+  .lightbox__img {
+    max-height: calc(100svh - 7rem);
+    border-radius: 6px;
+  }
+  /* No celular navega-se deslizando; as setas ficam menores, embaixo */
+  .lightbox__nav {
+    top: auto;
+    bottom: 0.5rem;
+    transform: none;
+    width: 44px;
+    height: 44px;
+  }
+}
+
+/* ---------- Chave PIX visível na lista de presentes ---------- */
+.pix-key {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  max-width: 760px;
+  margin: 0 auto 2.5rem;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--gold);
+  border-radius: var(--radius);
+  background: var(--white);
+  text-align: left;
+}
+.pix-key__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+.pix-key__label {
+  color: var(--gold);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.pix-key__value {
+  color: var(--ink);
+  font-size: 1.15rem;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+.pix-key__hint {
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+.pix-key__actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 0.5rem;
+}
+
+/* Card de valor livre ("Outras") */
+.gift-card--free {
+  border: 1px dashed var(--gold);
+  background: var(--paper);
+}
+.gift-card--free .gift-card__price {
+  color: var(--gold);
+}
+
+@media (max-width: 600px) {
+  .pix-key {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    margin-bottom: 1.75rem;
+    padding: 1rem 1.1rem;
+  }
+  .pix-key__value {
+    font-size: 1.05rem;
+  }
+  .pix-key__actions .btn {
+    flex: 1;
+    padding-block: 0.8rem;
+  }
+  /* "Outras" vira uma faixa ocupando a linha inteira */
+  .gift-card--free {
+    grid-column: 1 / -1;
+  }
+}
+.pix-key__actions .btn {
+  white-space: nowrap;
+}
+@media (max-width: 600px) {
+  .pix-key__actions .btn {
+    padding-inline: 0.5rem;
+    letter-spacing: 0.08em;
   }
 }

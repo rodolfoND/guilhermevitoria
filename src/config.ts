@@ -13,10 +13,33 @@ export const EVENT = {
 }
 
 export const PIX = {
-  key: 'guilhermehd2@hotmail.com',
+  // Chave celular no formato exigido pelo BR Code (+55 DDD número)
+  key: '+5537999369799',
+  // Versões exibida e copiada pelo convidado
+  keyLabel: '(37) 99936-9799',
+  keyCopy: '37999369799',
+  keyType: 'celular',
+  receiver: 'Vitória Carvalho Sousa Alvernaz',
   // Nome e cidade do recebedor: sem acentos, até 25 e 15 caracteres
-  merchantName: 'GUILHERME',
+  merchantName: 'VITORIA CARVALHO ALVERNAZ',
   merchantCity: 'PARA DE MINAS',
 }
 
-export const COUPLE_PHOTO = '/fotos/casal.jpg'
+export const PHOTOS = {
+  hero: '/fotos/casal.jpg',
+  couple: '/fotos/ensaio-escada.jpg',
+}
+
+export interface Photo {
+  src: string
+  alt: string
+  // Enquadramento da miniatura (object-position)
+  position: string
+}
+
+export const GALLERY: Photo[] = [
+  { src: '/fotos/ensaio-abraco.jpg', alt: 'Vitória e Guilherme abraçados, ela sorrindo', position: '30% 45%' },
+  { src: '/fotos/ensaio-escada.jpg', alt: 'Vitória e Guilherme sentados na escada de pedra entre as folhagens', position: '50% 75%' },
+  { src: '/fotos/ensaio-caminho.jpg', alt: 'Vitória e Guilherme de costas, abraçados no caminho de pedras', position: '55% 70%' },
+  { src: '/fotos/casal.jpg', alt: 'Vitória e Guilherme sorrindo juntos', position: '55% 25%' },
+]

@@ -1,10 +1,10 @@
-import { COUPLE_PHOTO } from '../config'
+import { PHOTOS } from '../config'
 
 export default function Couple() {
   return (
     <section id="casal" className="section couple">
       <div className="couple__photo">
-        <img src={COUPLE_PHOTO} alt="Guilherme e Vitória sorrindo juntos" />
+        <img src={PHOTOS.couple} alt="Vitória e Guilherme sentados juntos na escada de pedra" />
       </div>
       <div className="couple__text">
         <p className="section__kicker">Nossa história</p>
@@ -22,7 +22,7 @@ export default function Couple() {
           Criamos este site para compartilhar com vocês os detalhes do nosso casamento. Aguardamos
           vocês no nosso grande dia!
         </p>
-        <p className="couple__signature">Guilherme &amp; Vitória</p>
+        <p className="couple__signature">Vitória &amp; Guilherme</p>
       </div>
     </section>
   )

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 const LINKS = [
   { href: '#inicio', label: 'Início' },
   { href: '#casal', label: 'O casal' },
+  { href: '#galeria', label: 'Fotos' },
   { href: '#cerimonia', label: 'Cerimônia' },
   { href: '#presentes', label: 'Presentes' },
 ]
@@ -20,7 +21,7 @@ export default function Header() {
 
   return (
     <header className={`header ${scrolled ? 'header--solid' : ''}`}>
-      <a href="#inicio" className="header__brand">G &amp; V</a>
+      <a href="#inicio" className="header__brand">V &amp; G</a>
       <button
         className="header__toggle"
         aria-label="Abrir menu"
