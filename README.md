@@ -52,7 +52,8 @@ Quase tudo que muda de um casamento para outro fica em poucos arquivos:
 As tags Open Graph e Twitter ficam em `index.html` e usam a imagem `public/og-image.jpg` (1200×630). Como redes sociais exigem URL absoluta, o placeholder `%SITE_URL%` é trocado no build (`vite.config.ts`) por:
 
 1. `VITE_SITE_URL`, se definida (`.env` ou variáveis do projeto na Vercel), ex.: `VITE_SITE_URL=https://vitoriaeguilherme.com.br`;
-2. senão, o domínio de produção da Vercel (`VERCEL_PROJECT_PRODUCTION_URL`, preenchido automaticamente no deploy).
+2. senão, o domínio de produção da Vercel (`VERCEL_PROJECT_PRODUCTION_URL`, preenchido automaticamente no deploy);
+3. senão, `https://vitoriaeguilherme.vercel.app`.
 
 Depois de publicar, teste a prévia no [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/). O WhatsApp guarda a prévia em cache; se ela não atualizar, compartilhe o link com um parâmetro novo (ex.: `?v=2`).
 
